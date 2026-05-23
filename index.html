@@ -11,8 +11,9 @@
     
     <style>
         :root {
-            --navy-deep: #010409;
-            --navy-mid: #0d1117;
+            /* Regresamos al Azul Marino Premium */
+            --navy-deep: #0a0f1d;
+            --navy-mid: #1a2a42;
             --silver-text: #e2e8f0;
             --silver-bright: #ffffff;
             --silver-dark: #94a3b8;
@@ -83,7 +84,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #0d1117 0%, #010409 100%);
+            background: radial-gradient(ellipse at bottom, var(--navy-mid) 0%, var(--navy-deep) 100%);
         }
 
         /* 4. TEXTO PLATA BRILLANTE */
@@ -304,7 +305,7 @@
     </main>
 
     <script>
-        // --- 1. MOTOR DE PARTÍCULAS (STARS & RISING SPARKLES) ---
+        // --- 1. MOTOR DE PARTÍCULAS (DESTELLOS Y ESTRELLAS) ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -316,7 +317,7 @@
             particles = [];
             stars = [];
             
-            // Estrellas estáticas del fondo
+            // Estrellas estáticas del fondo que parpadean
             for (let i = 0; i < 150; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
@@ -327,15 +328,16 @@
             }
         }
 
-        // Generador de destellos ascendentes
+        // Generador de destellos que suben (Aumentado para mayor visibilidad)
         function createSparkle() {
-            if (particles.length < 60) {
+            if (particles.length < 100) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: canvas.height + 10,
-                    size: Math.random() * 2 + 0.5,
-                    speed: 0.3 + Math.random() * 1,
-                    opacity: 0.8 + Math.random() * 0.2
+                    size: Math.random() * 2.5 + 1, // Más grandes
+                    speed: 0.5 + Math.random() * 1.5,
+                    opacity: 0.8 + Math.random() * 0.2,
+                    blinkSpeed: 0.005 + Math.random() * 0.01 // Velocidad del destello
                 });
             }
         }
@@ -343,33 +345,38 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Dibujar estrellas fijas
+            // Dibujar estrellas de fondo con parpadeo
             ctx.fillStyle = "white";
             stars.forEach(s => {
-                ctx.globalAlpha = 0.2 + Math.abs(Math.sin(Date.now() * 0.001 + s.opacity * 10)) * 0.5;
+                ctx.globalAlpha = 0.1 + Math.abs(Math.sin(Date.now() * 0.0015 + s.opacity * 10)) * 0.8;
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
                 ctx.fill();
             });
 
-            // Dibujar brillos que suben
+            // Dibujar destellos ascendentes muy visibles
             particles.forEach((p, i) => {
-                ctx.globalAlpha = p.opacity;
+                // Efecto de destello/flash
+                ctx.globalAlpha = p.opacity * (0.3 + Math.abs(Math.sin(Date.now() * p.blinkSpeed)) * 0.7);
+                ctx.shadowBlur = 8; // Resplandor
+                ctx.shadowColor = "white";
+                
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
-                p.y -= p.speed;
-                p.opacity -= 0.0015;
                 
-                // Remover partículas cuando desaparecen o salen de pantalla
+                ctx.shadowBlur = 0; // Reset
+                
+                p.y -= p.speed;
+                p.opacity -= 0.002;
+                
+                // Remover partículas cuando desaparecen o salen
                 if (p.opacity <= 0 || p.y < 0) {
                     particles.splice(i, 1);
                 }
             });
 
-            // Intentar crear nuevas partículas en cada frame
-            if (Math.random() > 0.5) createSparkle();
-            
+            createSparkle();
             requestAnimationFrame(draw);
         }
 
@@ -400,7 +407,7 @@
                     document.getElementById('music-icon').className = "fas fa-volume-mute";
                 });
                 
-                reveal(); // Activar animaciones iniciales
+                reveal();
             }, 1200);
         }
 
