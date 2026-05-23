@@ -2,225 +2,220 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestra Boda | Karla & Julio Cesar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Boda Karla & Julio | Invytia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-navy: #0a0f1d;
-            --bg-navy-light: #162235;
-            --gold-primary: #d4af37;
-            --gold-soft: #f9e5c8;
-            --text-white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(212, 175, 55, 0.3);
+            --navy-deep: #020617;
+            --navy-glow: #0f172a;
+            --silver-primary: #e5e4e2;
+            --silver-bright: #ffffff;
+            --silver-dark: #94a3b8;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
             width: 100%;
+            height: 100%;
+            background-color: var(--navy-deep);
+            color: var(--silver-primary);
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-navy);
-            color: var(--text-white);
             overflow-x: hidden;
         }
 
-        /* -----------------------------------
-           PANEL DE ENTRADA (PUERTAS)
-        ------------------------------------ */
-        #entry-panel {
+        /* --- SISTEMA DE APERTURA PRECISIÓN MILIMÉTRICA --- */
+        #gate-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 10000;
             display: flex;
             overflow: hidden;
-            background-color: var(--bg-navy);
+            background: var(--navy-deep);
         }
 
-        .door {
-            width: 50.5%; 
+        .gate-half {
+            width: 50%;
             height: 100%;
-            background-image: url('assets/entrada.jpg');
-            background-size: cover; 
-            background-repeat: no-repeat;
-            transition: transform 1.6s cubic-bezier(0.7, 0, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 1.8s cubic-bezier(0.7, 0, 0.2, 1);
+        }
+
+        .gate-half::before {
+            content: '';
             position: absolute;
             top: 0;
+            width: 200%; 
+            height: 100%;
+            background-image: url('assets/entrada.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
-        .door-left {
-            left: 0;
-            background-position: 0% center; 
-            border-right: 0.5px solid var(--gold-primary);
-        }
+        .left-gate { left: 0; border-right: 1px solid rgba(255,255,255,0.1); }
+        .left-gate::before { left: 0; } 
 
-        .door-right {
-            right: 0;
-            background-position: 100% center; 
-            border-left: 0.5px solid var(--gold-primary);
-        }
+        .right-gate { right: 0; }
+        .right-gate::before { right: 0; } 
 
-        .entry-content {
+        .gate-content {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10001;
             text-align: center;
             width: 100%;
+            pointer-events: none;
             transition: opacity 0.8s ease;
         }
 
-        .monogram {
-            width: 160px;
+        .monogram-entrance {
+            width: 150px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
-            animation: pulseGlow 3s infinite;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));
+            animation: float 4s ease-in-out infinite;
         }
 
-        .tap-instruction {
+        .shimmer-text {
             font-family: 'Cinzel', serif;
-            color: var(--gold-soft);
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             font-size: 0.8rem;
+            color: var(--silver-bright);
+            opacity: 0.8;
             text-transform: uppercase;
-            cursor: pointer;
         }
 
-        /* -----------------------------------
-           AUDIO STICKY
-        ------------------------------------ */
-        #audio-controls {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 999;
-            display: none; 
-        }
-
-        .music-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(10, 15, 29, 0.8);
-            border: 1px solid var(--gold-primary);
-            color: var(--gold-primary);
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-
-        .music-btn:hover {
-            background: var(--gold-primary);
-            color: black;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-        }
-
-        /* -----------------------------------
-           ESTRELLAS DINÁMICAS
-        ------------------------------------ */
-        #star-container {
+        /* --- FONDO DINÁMICO STARRY NIGHT --- */
+        #star-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #162235 0%, #0a0f1d 100%);
+            background: radial-gradient(circle at center, var(--navy-glow) 0%, var(--navy-deep) 100%);
         }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: blink var(--d) infinite;
+        /* --- TEXTO PLATA BRILLANTE --- */
+        .silver-shine {
+            background: linear-gradient(to right, #94a3b8 20%, #ffffff 40%, #ffffff 60%, #94a3b8 80%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 4s linear infinite;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 0.8; box-shadow: 0 0 10px white; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* -----------------------------------
-           SECCIONES DE LA INVITACIÓN
-        ------------------------------------ */
-        .main-wrapper {
+        /* --- DISEÑO FLUIDO PREMIUM --- */
+        .content-scroller {
+            width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            visibility: hidden; 
+            padding: 80px 20px;
+            opacity: 0;
+            transition: opacity 2s ease;
         }
 
-        .glass-section {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 40px 25px;
-            margin-bottom: 50px;
+        .section-wrap {
+            margin-bottom: 120px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
         }
 
-        h1, h2, .cinzel { font-family: 'Cinzel', serif; }
+        .cinzel { font-family: 'Cinzel', serif; }
+        .thin { font-weight: 200; letter-spacing: 3px; }
 
-        .names-header { font-size: 2.5rem; margin: 15px 0; color: var(--gold-soft); line-height: 1.2; }
-        .names-header span { display: block; font-size: 1.5rem; color: var(--gold-primary); margin: 5px 0; }
-        
-        .full-names { font-size: 0.75rem; letter-spacing: 2px; line-height: 1.8; opacity: 0.9; margin-top: 15px; }
-
-        /* Countdown */
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 25px;
+        .main-names {
+            font-size: 3rem;
+            line-height: 1;
+            margin: 20px 0;
+            font-weight: 700;
         }
-        .timer-item span { display: block; font-family: 'Cinzel'; font-size: 1.5rem; color: var(--gold-primary); }
-        .timer-item label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
 
-        /* Botones */
-        .btn-gold {
+        .divider-diamond {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--silver-dark);
+            transform: rotate(45deg);
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Countdown Minimalista */
+        .countdown-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .cd-item {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .cd-val { font-size: 1.8rem; display: block; color: var(--silver-bright); }
+        .cd-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--silver-dark); }
+
+        /* Botones Plateados */
+        .btn-platinum {
             display: inline-block;
-            padding: 12px 25px;
-            border: 1px solid var(--gold-primary);
-            border-radius: 50px;
-            color: var(--gold-soft);
+            padding: 14px 30px;
+            border: 1px solid var(--silver-primary);
+            color: var(--silver-bright);
             text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            margin-top: 25px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(5px);
+            transition: 0.4s;
+        }
+
+        .btn-platinum:hover {
+            background: var(--silver-primary);
+            color: var(--navy-deep);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        /* Mapas e Iconos */
+        .map-frame {
+            width: 100%;
+            height: 200px;
+            border: 1px solid rgba(255,255,255,0.1);
             margin-top: 20px;
-            transition: 0.3s;
-        }
-        .btn-gold:hover { background: var(--gold-primary); color: black; font-weight: 600; }
-
-        /* Iconos Dorados */
-        .icon-box { font-size: 2rem; color: var(--gold-primary); margin-bottom: 15px; }
-
-        /* Animaciones */
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
+            filter: grayscale(1) invert(0.9) contrast(1.2);
+            border-radius: 2px;
         }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        /* Audio Control */
+        #music-ctrl {
+            position: fixed;
+            bottom: 30px; left: 30px;
+            z-index: 5000;
+            width: 40px; height: 40px;
+            border: 1px solid var(--silver-dark);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            background: rgba(2, 6, 23, 0.6);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: 1s;
+        }
+
+        /* Animaciones Scroll */
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.5s cubic-bezier(0.2, 0, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Responsive extra */
-        @media (max-width: 380px) {
-            .names-header { font-size: 2.2rem; }
-            .monogram { width: 140px; }
-        }
     </style>
 </head>
 <body>
@@ -229,200 +224,201 @@
         <source src="assets/song.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="entry-panel" onclick="startExperience()">
-        <div class="door door-left" id="dl"></div>
-        <div class="door door-right" id="dr"></div>
-        <div class="entry-content" id="ec">
-            <img src="assets/icono.png" class="monogram" alt="Save the Date">
-            <div class="tap-instruction">Toca para abrir</div>
+    <div id="music-ctrl" onclick="toggleMusic()">
+        <i id="m-icon" class="fas fa-music" style="font-size: 0.8rem; color: var(--silver-primary);"></i>
+    </div>
+
+    <div id="gate-container" onclick="openSesame()">
+        <div class="gate-half left-gate" id="lg"></div>
+        <div class="gate-half right-gate" id="rg"></div>
+        <div class="gate-content" id="gc">
+            <img src="assets/icono.png" class="monogram-entrance" alt="Save the Date">
+            <p class="shimmer-text">Tocar para entrar</p>
         </div>
     </div>
 
-    <div id="audio-controls">
-        <button class="music-btn" onclick="toggleAudio()">
-            <i id="music-icon" class="fas fa-music"></i>
-        </button>
-    </div>
+    <canvas id="star-canvas"></canvas>
 
-    <div id="star-container"></div>
-
-    <div class="main-wrapper" id="content">
+    <main class="content-scroller" id="main-content">
         
-        <section class="glass-section reveal">
-            <p class="cinzel" style="letter-spacing: 5px; font-size: 0.7rem; color: var(--gold-primary);">NUESTRA BODA</p>
-            <h1 class="names-header cinzel">Karla <span>&</span> Julio Cesar</h1>
-            <p class="full-names">KARLA STEPHANIE MARCOS ROCHA<br>Y<br>JULIO CESAR FLORES FERNANDEZ</p>
-            <p style="font-weight: 300; letter-spacing: 2px; font-size: 0.9rem; margin-top: 20px; color: var(--gold-soft);">28 DE NOVIEMBRE, 2026</p>
+        <section class="section-wrap reveal">
+            <p class="cinzel thin">Nuestra Boda</p>
+            <h1 class="main-names cinzel silver-shine">Karla <span>&</span> Julio Cesar</h1>
+            <div class="divider-diamond"><i class="fas fa-star" style="font-size: 0.6rem;"></i></div>
+            <p class="cinzel thin" style="font-size: 1.1rem;">28 . NOVIEMBRE . 2026</p>
         </section>
 
-        <section class="glass-section reveal">
-            <h2 class="cinzel" style="font-size: 1.2rem; color: var(--gold-soft);">CUÁNTO FALTA...</h2>
-            <div class="timer-grid">
-                <div class="timer-item"><span id="days">00</span><label>Días</label></div>
-                <div class="timer-item"><span id="hours">00</span><label>Hrs</label></div>
-                <div class="timer-item"><span id="mins">00</span><label>Min</label></div>
-                <div class="timer-item"><span id="secs">00</span><label>Seg</label></div>
+        <section class="section-wrap reveal">
+            <div class="countdown-wrap">
+                <div class="cd-item"><span class="cd-val cinzel" id="d">00</span><label class="cd-lbl">Días</label></div>
+                <div class="cd-item"><span class="cd-val cinzel" id="h">00</span><label class="cd-lbl">Hrs</label></div>
+                <div class="cd-item"><span class="cd-val cinzel" id="m">00</span><label class="cd-lbl">Min</label></div>
+                <div class="cd-item"><span class="cd-val cinzel" id="s">00</span><label class="cd-lbl">Seg</label></div>
+            </div>
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Karla+%26+Julio+C%C3%A9sar&dates=20261128T180000Z/20261129T040000Z&details=Celebraci%C3%B3n+de+nuestra+unión+matrimonial.&location=Parroquia+de+Santiago+Ap%C3%B3stol,+Tlatelolco&sf=true&output=xml" 
+               target="_blank" class="btn-platinum">
+               <i class="far fa-calendar-plus" style="margin-right: 10px;"></i> Save the Date
+            </a>
+        </section>
+
+        <section class="section-wrap reveal">
+            <i class="fas fa-church" style="font-size: 1.5rem; margin-bottom: 20px;"></i>
+            <h2 class="cinzel silver-shine" style="font-size: 1.4rem;">La Ceremonia</h2>
+            <p class="thin" style="margin: 20px 0; line-height: 2;">
+                PARROQUIA DE SANTIAGO APÓSTOL<br>
+                Tlatelolco, Cuauhtémoc, CDMX<br>
+                18:00 HORAS
+            </p>
+            <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.158335345719!2d-99.13963288463991!3d19.450849986873133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f9301e74fa3b%3A0xc3191f63a38cf0!2sParroquia%20de%20Santiago%20Ap%C3%B3stol!5e0!3m2!1ses-419!2smx!4v1684345235882!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
+            <a href="https://goo.gl/maps/Q3j1G8RjX1Z2X2z57" target="_blank" class="btn-platinum">Cómo llegar</a>
+        </section>
+
+        <section class="section-wrap reveal">
+            <i class="fas fa-glass-cheers" style="font-size: 1.5rem; margin-bottom: 20px;"></i>
+            <h2 class="cinzel silver-shine" style="font-size: 1.4rem;">La Celebración</h2>
+            <p class="thin" style="margin: 20px 0; line-height: 2;">
+                SALÓN DE EVENTOS<br>
+                [Dirección del Evento], CDMX<br>
+                20:00 HORAS
+            </p>
+            <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.665792949704!2d-99.16781708464016!3d19.42686128688849!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff35f5dd50b1%3A0x6b8bc3d67f53f93!2sEl%20%C3%81ngel%20de%20la%20Independencia!5e0!3m2!1ses-419!2smx!4v1684345330368!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
+            <a href="#" target="_blank" class="btn-platinum">Abrir Mapa</a>
+        </section>
+
+        <section class="section-wrap reveal">
+            <h2 class="cinzel silver-shine">Dress Code</h2>
+            <p class="thin" style="margin-top: 15px; font-size: 1.1rem; letter-spacing: 5px;">RIGUROSA ETIQUETA</p>
+            <p class="thin" style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">CABALLEROS: SMOKING / DAMAS: VESTIDO LARGO</p>
+        </section>
+
+        <section class="section-wrap reveal">
+            <i class="fas fa-gift" style="font-size: 1.5rem; margin-bottom: 20px;"></i>
+            <h2 class="cinzel silver-shine">Mesa de Regalos</h2>
+            <p class="thin" style="margin: 20px 0; font-size: 0.9rem; line-height: 1.8;">SU PRESENCIA ES NUESTRO MEJOR REGALO,<br>PERO SI DESEAN TENER UN DETALLE:</p>
+            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02); margin-bottom: 20px;">
+                <p class="cinzel" style="color: var(--silver-bright); font-size: 1.1rem;">LIVERPOOL</p>
+                <p class="thin" style="font-size: 0.8rem; margin-top: 5px;">EVENTO: 50493821</p>
+            </div>
+            <div style="padding: 20px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <p class="cinzel" style="color: var(--silver-bright); font-size: 1.1rem;">LLUVIA DE SOBRES</p>
+                <p class="thin" style="font-size: 0.8rem; margin-top: 5px;">BUZÓN DISPONIBLE EN EL EVENTO</p>
             </div>
         </section>
 
-        <section class="glass-section reveal">
-            <div class="icon-box"><i class="fas fa-church"></i></div>
-            <h2 class="cinzel">Ceremonia Religiosa</h2>
-            <p style="margin: 15px 0; font-size: 0.9rem; line-height: 1.6;">
-                Tenemos el honor de invitarte a celebrar nuestra unión matrimonial.<br><br>
-                <strong style="color: var(--gold-soft); font-size: 1.1rem;" class="cinzel">Parroquia de Santiago Apóstol</strong><br>
-                Tlatelolco, Cuauhtémoc, CDMX.<br>
-                <strong>18:00 Horas</strong>
-            </p>
-            <a href="https://maps.google.com" target="_blank" class="btn-gold">Ver mapa</a>
+        <section class="section-wrap reveal" style="margin-bottom: 80px;">
+            <h2 class="cinzel silver-shine">Confirmación</h2>
+            <p class="thin" style="margin: 20px 0;">AGRADECEMOS CONFIRMAR ANTES DEL 01.11.2026</p>
+            <a href="https://wa.me/525500000000?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20Boda%20de%20Karla%20y%20Julio" 
+               target="_blank" class="btn-platinum" style="background: var(--silver-primary); color: black;">
+               Confirmar Asistencia
+            </a>
         </section>
 
-        <section class="glass-section reveal">
-            <div class="icon-box"><i class="fas fa-glass-cheers"></i></div>
-            <h2 class="cinzel">Recepción</h2>
-            <p style="margin: 15px 0; font-size: 0.9rem; line-height: 1.6;">
-                Después de la ceremonia, te esperamos para brindar y celebrar juntos.<br><br>
-                <strong style="color: var(--gold-soft); font-size: 1.1rem;" class="cinzel">[Nombre del Salón]</strong><br>
-                [Dirección del Salón]<br>
-                <strong>20:00 Horas</strong>
-            </p>
-            <a href="https://maps.google.com" target="_blank" class="btn-gold">Ver ubicación</a>
-        </section>
-        
-        <section class="glass-section reveal">
-            <div class="icon-box"><i class="fas fa-user-tie"></i></div>
-            <h2 class="cinzel">Dress Code</h2>
-            <p style="margin: 15px 0; font-size: 1.1rem; color: var(--gold-soft);" class="cinzel">
-                Rigurosa Etiqueta
-            </p>
-            <p style="font-size: 0.9rem; line-height: 1.6;">
-                <strong>Mujeres:</strong> Vestido Largo<br>
-                <strong>Hombres:</strong> Traje Formal o Smoking
-            </p>
-            <p style="font-size: 0.75rem; margin-top: 15px; opacity: 0.7;">
-                Por favor reservar el color blanco exclusivo para la novia.
-            </p>
-        </section>
-
-        <section class="glass-section reveal">
-            <div class="icon-box"><i class="fas fa-gift"></i></div>
-            <h2 class="cinzel">Mesa de Regalos</h2>
-            <p style="font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, te sugerimos:</p>
-            
-            <div style="border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;">
-                <p class="cinzel" style="color: var(--gold-soft); font-size: 1.1rem;">Lluvia de Sobres</p>
-                <p style="font-size: 0.8rem; margin-top: 5px;">Habrá un buzón en la recepción para depositar tu sobre el día del evento.</p>
-            </div>
-            
-            <div style="padding-top: 15px;">
-                <p class="cinzel" style="color: var(--gold-soft); font-size: 1.1rem;">Liverpool</p>
-                <p style="font-size: 0.8rem; margin-top: 5px;">Número de evento: 12345678</p>
-            </div>
-        </section>
-
-        <section class="glass-section reveal" style="margin-bottom: 80px;">
-            <div class="icon-box"><i class="far fa-envelope"></i></div>
-            <h2 class="cinzel">Asistencia</h2>
-            <p style="font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;">Nos haría muy felices compartir este día contigo. Por favor confirma tu asistencia antes del <strong>1 de Noviembre de 2026</strong>.</p>
-            <a href="javascript:void(0)" class="btn-gold" style="background: var(--gold-primary); color: black; font-weight: 600;">Confirmar Asistencia</a>
-        </section>
-
-    </div>
+    </main>
 
     <script>
-        // 1. GENERADOR DE ESTRELLAS
-        const starContainer = document.getElementById('star-container');
-        for (let i = 0; i < 120; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
-            const delay = Math.random() * 5;
-            const dur = 2 + Math.random() * 3;
-            const size = 1 + Math.random() * 2.5;
-            
-            star.style.left = x + '%';
-            star.style.top = y + '%';
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.setProperty('--d', dur + 's');
-            star.style.animationDelay = delay + 's';
-            
-            starContainer.appendChild(star);
+        // --- 1. CANVAS DE ESTRELLAS ANIMADAS ---
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 200; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5,
+                    opacity: Math.random(),
+                    speed: 0.005 + Math.random() * 0.01
+                });
+            }
         }
 
-        // 2. LÓGICA DE APERTURA (PUERTAS Y AUDIO)
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(s => {
+                ctx.globalAlpha = Math.abs(Math.sin(s.opacity));
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                s.opacity += s.speed;
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        // --- 2. APERTURA ---
         const song = document.getElementById('wedding-song');
         let isOpened = false;
 
-        function startExperience() {
-            if (isOpened) return;
+        function openSesame() {
+            if(isOpened) return;
             isOpened = true;
-            
-            document.getElementById('dl').style.transform = 'translateX(-100%)';
-            document.getElementById('dr').style.transform = 'translateX(100%)';
-            document.getElementById('ec').style.opacity = '0';
+
+            document.getElementById('lg').style.transform = 'translateX(-100%)';
+            document.getElementById('rg').style.transform = 'translateX(100%)';
+            document.getElementById('gc').style.opacity = '0';
             
             setTimeout(() => {
-                document.getElementById('entry-panel').style.display = 'none';
-                document.getElementById('content').style.visibility = 'visible';
-                document.getElementById('audio-controls').style.display = 'block';
+                document.getElementById('gate-container').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+                document.getElementById('music-ctrl').style.opacity = '1';
                 
-                // Intentar reproducir el audio
                 song.play().catch(() => {
-                    document.getElementById('music-icon').className = 'fas fa-volume-mute';
+                    document.getElementById('m-icon').className = "fas fa-volume-mute";
                 });
-                
-                reveal(); // Disparar animaciones iniciales
+
+                reveal();
             }, 1200);
         }
 
-        // 3. CONTROL DEL BOTÓN DE AUDIO
-        function toggleAudio() {
-            const icon = document.getElementById('music-icon');
-            if (song.paused) {
-                song.play();
-                icon.className = 'fas fa-music';
-            } else {
-                song.pause();
-                icon.className = 'fas fa-volume-mute';
+        function toggleMusic() {
+            const icon = document.getElementById('m-icon');
+            if (song.paused) { 
+                song.play(); 
+                icon.className = "fas fa-music"; 
+            } else { 
+                song.pause(); 
+                icon.className = "fas fa-volume-mute"; 
             }
         }
 
-        // 4. CUENTA REGRESIVA AL 28 DE NOVIEMBRE DE 2026
-        const targetDate = new Date("Nov 28, 2026 18:00:00").getTime();
-        
+        // --- 3. COUNTDOWN ---
+        const target = new Date("Nov 28, 2026 18:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
-            const diff = targetDate - now;
+            const d = target - now;
             
-            if (diff > 0) {
-                document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-                document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-                document.getElementById('mins').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            if (d > 0) {
+                document.getElementById('d').innerText = String(Math.floor(d / 86400000)).padStart(2, '0');
+                document.getElementById('h').innerText = String(Math.floor((d % 86400000) / 3600000)).padStart(2, '0');
+                document.getElementById('m').innerText = String(Math.floor((d % 3600000) / 60000)).padStart(2, '0');
+                document.getElementById('s').innerText = String(Math.floor((d % 60000) / 1000)).padStart(2, '0');
             } else {
-                document.getElementById('days').innerText = "00";
-                document.getElementById('hours').innerText = "00";
-                document.getElementById('mins').innerText = "00";
-                document.getElementById('secs').innerText = "00";
+                document.getElementById('d').innerText = "00";
+                document.getElementById('h').innerText = "00";
+                document.getElementById('m').innerText = "00";
+                document.getElementById('s').innerText = "00";
             }
         }, 1000);
 
-        // 5. ANIMACIONES AL HACER SCROLL (Intersection Observer)
+        // --- 4. REVEAL ---
         function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => {
+                const windowHeight = window.innerHeight;
+                const elementTop = r.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) r.classList.add("active");
+            });
         }
+
         window.addEventListener("scroll", reveal);
+        window.addEventListener("resize", initCanvas);
+        initCanvas();
+        drawStars();
     </script>
 </body>
 </html>
