@@ -11,7 +11,7 @@
     
     <style>
         :root {
-            /* Regresamos al Azul Marino Premium */
+            var(--navy-deep): #0a0f1d;
             --navy-deep: #0a0f1d;
             --navy-mid: #1a2a42;
             --silver-text: #e2e8f0;
@@ -23,7 +23,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { 
             width: 100%; 
-            background-color: var(--navy-deep); 
             color: var(--silver-text); 
             font-family: 'Montserrat', sans-serif; 
             overflow-x: hidden; 
@@ -83,7 +82,7 @@
         #particle-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            z-index: 0; /* Asegura que el canvas esté detrás del contenido pero visible */
             background: radial-gradient(ellipse at bottom, var(--navy-mid) 0%, var(--navy-deep) 100%);
         }
 
@@ -100,6 +99,8 @@
 
         /* 5. DISEÑO DE SECCIONES (FLUIDO) */
         .main-content {
+            position: relative;
+            z-index: 10; /* Eleva el contenido por encima de los destellos del canvas */
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
@@ -159,8 +160,8 @@
             height: 250px;
             border: 1px solid rgba(255,255,255,0.1);
             margin: 25px 0;
-            filter: grayscale(1) invert(0.9) contrast(1.2);
             border-radius: 4px;
+            /* Filtro removido para que el mapa se muestre a color */
         }
         .address-text { font-size: 0.85rem; font-weight: 300; line-height: 1.8; margin-bottom: 15px; }
 
