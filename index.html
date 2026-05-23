@@ -11,7 +11,6 @@
     
     <style>
         :root {
-            var(--navy-deep): #0a0f1d;
             --navy-deep: #0a0f1d;
             --navy-mid: #1a2a42;
             --silver-text: #e2e8f0;
@@ -78,11 +77,11 @@
             animation: float 4s ease-in-out infinite;
         }
 
-        /* 3. FONDO DINÁMICO (STARS & RISING SPARKLES) */
+        /* 3. FONDO DINÁMICO (STARS) */
         #particle-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; /* Asegura que el canvas esté detrás del contenido pero visible */
+            z-index: 0; 
             background: radial-gradient(ellipse at bottom, var(--navy-mid) 0%, var(--navy-deep) 100%);
         }
 
@@ -100,7 +99,7 @@
         /* 5. DISEÑO DE SECCIONES (FLUIDO) */
         .main-content {
             position: relative;
-            z-index: 10; /* Eleva el contenido por encima de los destellos del canvas */
+            z-index: 10; 
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
@@ -161,7 +160,6 @@
             border: 1px solid rgba(255,255,255,0.1);
             margin: 25px 0;
             border-radius: 4px;
-            /* Filtro removido para que el mapa se muestre a color */
         }
         .address-text { font-size: 0.85rem; font-weight: 300; line-height: 1.8; margin-bottom: 15px; }
 
@@ -306,16 +304,14 @@
     </main>
 
     <script>
-        // --- 1. MOTOR DE PARTÍCULAS (DESTELLOS Y ESTRELLAS) ---
+        // --- 1. MOTOR DE PARTÍCULAS (ESTRELLAS ESTÁTICAS) ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
         let stars = [];
 
         function initCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = [];
             stars = [];
             
             // Estrellas estáticas del fondo que parpadean
@@ -325,20 +321,6 @@
                     y: Math.random() * canvas.height,
                     size: Math.random() * 1.5,
                     opacity: Math.random()
-                });
-            }
-        }
-
-        // Generador de destellos que suben (Aumentado para mayor visibilidad)
-        function createSparkle() {
-            if (particles.length < 100) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: canvas.height + 10,
-                    size: Math.random() * 2.5 + 1, // Más grandes
-                    speed: 0.5 + Math.random() * 1.5,
-                    opacity: 0.8 + Math.random() * 0.2,
-                    blinkSpeed: 0.005 + Math.random() * 0.01 // Velocidad del destello
                 });
             }
         }
@@ -355,29 +337,6 @@
                 ctx.fill();
             });
 
-            // Dibujar destellos ascendentes muy visibles
-            particles.forEach((p, i) => {
-                // Efecto de destello/flash
-                ctx.globalAlpha = p.opacity * (0.3 + Math.abs(Math.sin(Date.now() * p.blinkSpeed)) * 0.7);
-                ctx.shadowBlur = 8; // Resplandor
-                ctx.shadowColor = "white";
-                
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                ctx.shadowBlur = 0; // Reset
-                
-                p.y -= p.speed;
-                p.opacity -= 0.002;
-                
-                // Remover partículas cuando desaparecen o salen
-                if (p.opacity <= 0 || p.y < 0) {
-                    particles.splice(i, 1);
-                }
-            });
-
-            createSparkle();
             requestAnimationFrame(draw);
         }
 
