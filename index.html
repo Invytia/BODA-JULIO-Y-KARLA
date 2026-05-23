@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda | Karla & Julio Cesar</title>
+    <!-- Fuentes Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color-top: #0a0f1d;
+            --bg-color-bottom: #1a2a42;
+            --gold-light: #f9e5c8;
+            --gold-primary: #d4af37;
+            --gold-dark: #aa8c2c;
+            --text-light: #e2e8f0;
+            --glass-bg: rgba(11, 19, 43, 0.4);
+            --glass-border: rgba(212, 175, 55, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(ellipse at bottom, var(--bg-color-bottom) 0%, var(--bg-color-top) 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* -----------------------------------
+           PANEL DE ENTRADA (PUERTAS)
+        ------------------------------------ */
+        #entry-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Las dos mitades de la puerta que forman la imagen completa */
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50vw;
+            height: 100vh;
+            background-image: url('assets/entrada.jpg');
+            background-size: 100vw 100vh; /* Obliga a la imagen a medir la pantalla completa */
+            background-repeat: no-repeat;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 1;
+        }
+        
+        /* Mitad izquierda */
+        .door-left {
+            left: 0;
+            background-position: left top;
+            border-right: 1px solid rgba(212, 175, 55, 0.3); /* Ligero filo dorado al centro */
+        }
+
+        /* Mitad derecha */
+        .door-right {
+            right: 0;
+            background-position: right top;
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Contenido central del panel de entrada */
+        .entry-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .monogram {
+            width: 180px;
+            max-width: 60vw;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        .entry-text {
+            margin-top: 30px;
+            font-family: 'Cinzel', serif;
+            color: var(--gold-light);
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            animation: pulseText 2.5s infinite;
+        }
+
+        /* Animaciones del panel de entrada */
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(212,175,55,0.4)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(212,175,55,0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(212,175,55,0.4)); }
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Clases que se añaden por JS al hacer click */
+        .open-left { transform: translateX(-100%); }
+        .open-right { transform: translateX(100%); }
+        .fade-out { opacity: 0 !important; pointer-events: none; }
+
+        /* -----------------------------------
+           AUDIO STICKY BUTTON
+        ------------------------------------ */
+        .audio-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(11, 19, 43, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 9900;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            opacity: 0; /* Oculto al inicio, se muestra tras abrir la invitación */
+            pointer-events: none;
+        }
+
+        .audio-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .audio-btn:hover {
+            background: var(--gold-primary);
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            transform: scale(1.1);
+        }
+
+        /* -----------------------------------
+           FONDO ESTRELLADO DINÁMICO
+        ------------------------------------ */
+        #star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 15px rgba(255, 255, 255, 1); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        /* -----------------------------------
+           TIPOGRAFÍA Y CONTENEDORES
+        ------------------------------------ */
+        h1, h2, h3, .serif {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+        }
+
+        .gold-text {
+            background: linear-gradient(to right, var(--gold-light), var(--gold-primary), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            padding: 80px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 100%;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            justify-content: center;
+        }
+
+        .hero p.pre-title {
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: var(--gold-light);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: var(--gold-primary);
+        }
+
+        .hero p.full-names {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Countdown */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-box span.number {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold-primary);
+        }
+
+        .time-box span.label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* Detalles e Iconos */
+        .icon-gold {
+            font-size: 2rem;
+            color: var(--gold-primary);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        p.detail-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        /* Botones Premium */
+        .btn-gold {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--gold-primary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            border: 1px solid var(--gold-primary);
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gold:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            color: var(--gold-light);
+        }
+
+        /* Animaciones de Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.8rem; }
+            .countdown-container { gap: 10px; }
+            .time-box span.number { font-size: 1.8rem; }
+            .monogram { width: 140px; }
+            .door { background-size: cover; background-position: center; } /* Fallback ajustado para móviles */
+            .door-left { background-position: left center; }
+            .door-right { background-position: right center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUCTOR DE AUDIO OCULTO -->
+    <audio id="bg-music" loop>
+        <source src="assets/song.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- BOTÓN STICKY DE MÚSICA -->
+    <button id="audio-btn" class="audio-btn">
+        <i class="fa-solid fa-music"></i>
+    </button>
+
+    <!-- PANEL DE ENTRADA INTERACTIVO (SAVE THE DATE) -->
+    <div id="entry-panel" onclick="openInvitation()">
+        <div class="door door-left" id="door-l"></div>
+        <div class="door door-right" id="door-r"></div>
+        <div class="entry-content" id="entry-content">
+            <img src="assets/icono.png" alt="Monograma Karla y Julio" class="monogram">
+            <p class="entry-text">Toca para abrir</p>
+        </div>
+    </div>
+
+    <!-- FONDO ESTRELLADO DINÁMICO -->
+    <div id="star-container"></div>
+
+    <!-- CONTENIDO DE LA INVITACIÓN -->
+    <div class="container">
+        
+        <!-- SECCIÓN 1: PORTADA -->
+        <section class="hero reveal">
+            <div class="glass-card">
+                <p class="pre-title">Nuestra Boda</p>
+                <h1 class="gold-text">Karla <span>&</span> Julio</h1>
+                <p class="full-names">KARLA STEPHANIE MARCOS ROCHA<br>Y<br>JULIO CESAR FLORES FERNANDEZ</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: FECHA Y CONTADOR -->
+        <section class="reveal">
+            <div class="glass-card">
+                <i class="fa-regular fa-calendar icon-gold"></i>
+                <h2 class="gold-text">Reserva la Fecha</h2>
+                <p class="detail-text serif" style="font-size: 1.2rem; color: var(--gold-light);">Sábado, 28 de Noviembre de 2026</p>
+                <p class="detail-text" style="font-size: 0.8rem; opacity: 0.7;">Ciudad de México</p>
+                
+                <div class="countdown-container" id="countdown">
+                    <div class="time-box">
+                        <span class="number" id="days">00</span>
+                        <span class="label">Días</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="number" id="hours">00</span>
+                        <span class="label">Hrs</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="number" id="minutes">00</span>
+                        <span class="label">Min</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="number" id="seconds">00</span>
+                        <span class="label">Seg</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CEREMONIA RELIGIOSA -->
+        <section class="reveal">
+            <div class="glass-card">
+                <i class="fa-solid fa-church icon-gold"></i>
+                <h2 class="gold-text">Ceremonia</h2>
+                <p class="detail-text">Tenemos el honor de invitarte a celebrar nuestra unión matrimonial.</p>
+                <p class="detail-text serif" style="margin-top: 20px; font-size: 1.2rem; color: var(--gold-light);">Parroquia de Santiago Apóstol</p>
+                <p class="detail-text">Tlatelolco, Cuauhtémoc, CDMX</p>
+                <p class="detail-text"><strong>18:00 hrs</strong></p>
+                <a href="https://maps.google.com/?q=Parroquia+de+Santiago+Apostol+Tlatelolco" target="_blank" class="btn-gold">Ver Ubicación en Mapa</a>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: RECEPCIÓN -->
+        <section class="reveal">
+            <div class="glass-card">
+                <i class="fa-solid fa-champagne-glasses icon-gold"></i>
+                <h2 class="gold-text">Recepción</h2>
+                <p class="detail-text">Después de la ceremonia, te esperamos para brindar y celebrar juntos.</p>
+                <p class="detail-text serif" style="margin-top: 20px; font-size: 1.2rem; color: var(--gold-light);">[Nombre del Salón/Jardín]</p>
+                <p class="detail-text">[Dirección completa de la recepción]</p>
+                <p class="detail-text"><strong>20:00 hrs</strong></p>
+                <a href="javascript:void(0)" class="btn-gold">Ver Ubicación en Mapa</a>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CÓDIGO DE VESTIMENTA -->
+        <section class="reveal">
+            <div class="glass-card">
+                <i class="fa-solid fa-user-tie icon-gold"></i>
+                <h2 class="gold-text">Dress Code</h2>
+                <p class="detail-text serif" style="font-size: 1.3rem; color: var(--gold-light);">Rigurosa Etiqueta</p>
+                <p class="detail-text" style="margin-top: 10px; font-size: 0.9rem;">
+                    <strong>Mujeres:</strong> Vestido Largo<br>
+                    <strong>Hombres:</strong> Traje Formal o Smoking
+                </p>
+                <p class="detail-text" style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7;">Por favor reservar el color blanco exclusivo para la novia.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: REGALOS -->
+        <section class="reveal">
+            <div class="glass-card">
+                <i class="fa-solid fa-gift icon-gold"></i>
+                <h2 class="gold-text">Mesa de Regalos</h2>
+                <p class="detail-text">El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, te sugerimos:</p>
+                <div style="margin-top: 20px;">
+                    <p class="detail-text"><strong>Lluvia de Sobres</strong></p>
+                    <p class="detail-text" style="font-size: 0.85rem; opacity: 0.8;">Habrá un buzón en la recepción para depositar tu sobre.</p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <p class="detail-text"><strong>Liverpool</strong></p>
+                    <p class="detail-text" style="font-size: 0.85rem; opacity: 0.8;">Evento: 12345678</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: CONFIRMACIÓN (RSVP) -->
+        <section class="reveal" style="padding-bottom: 100px;">
+            <div class="glass-card">
+                <i class="fa-regular fa-envelope icon-gold"></i>
+                <h2 class="gold-text">Asistencia</h2>
+                <p class="detail-text">Nos haría muy felices compartir este día contigo. Por favor confirma tu asistencia antes del <strong>1 de Noviembre de 2026</strong>.</p>
+                <!-- Botón visual de WhatsApp (Placeholder por ahora) -->
+                <a href="javascript:void(0)" class="btn-gold" style="background: var(--gold-primary); color: #000; font-weight: 600;">Confirmar por WhatsApp</a>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 1. LÓGICA DE APERTURA (PUERTAS) Y REPRODUCCIÓN DE AUDIO
+        let isOpen = false;
+        const bgMusic = document.getElementById("bg-music");
+        const audioBtn = document.getElementById("audio-btn");
+        const audioIcon = audioBtn.querySelector("i");
+
+        function openInvitation() {
+            if(isOpen) return;
+            isOpen = true;
+
+            // Animar puertas y desvanecer contenido central
+            document.getElementById("door-l").classList.add("open-left");
+            document.getElementById("door-r").classList.add("open-right");
+            document.getElementById("entry-content").classList.add("fade-out");
+
+            // Ocultar el panel de entrada por completo después de la transición (1.5s)
+            setTimeout(() => {
+                document.getElementById("entry-panel").style.display = "none";
+            }, 1500);
+
+            // Iniciar música
+            bgMusic.play().then(() => {
+                audioIcon.className = "fa-solid fa-volume-up";
+            }).catch(error => {
+                // Autoplay block prevent (fallback)
+                console.log("Interacción necesaria para reproducir audio");
+                audioIcon.className = "fa-solid fa-volume-xmark";
+            });
+
+            // Mostrar el botón de música
+            audioBtn.classList.add("visible");
+            
+            // Forzar revisión de animaciones por scroll una vez que se quita la cortina
+            setTimeout(reveal, 500);
+        }
+
+        // 2. CONTROL DEL BOTÓN DE AUDIO
+        audioBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                audioIcon.className = "fa-solid fa-volume-up";
+            } else {
+                bgMusic.pause();
+                audioIcon.className = "fa-solid fa-volume-xmark";
+            }
+        });
+
+        // 3. GENERADOR DE ESTRELLAS DINÁMICAS
+        function createStars() {
+            const container = document.getElementById('star-container');
+            const starCount = 150; 
+
+            for (let i = 0; i < starCount; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                
+                let x = Math.random() * 100;
+                let y = Math.random() * 100;
+                let size = Math.random() * 2.5 + 0.5;
+                let duration = Math.random() * 3 + 2;
+                let delay = Math.random() * 5;
+
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+
+                container.appendChild(star);
+            }
+        }
+
+        // 4. ANIMACIONES DE APARICIÓN AL HACER SCROLL
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            var windowHeight = window.innerHeight;
+            
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100; 
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // 5. CUENTA REGRESIVA AL 28 DE NOVIEMBRE 2026
+        const weddingDate = new Date("Nov 28, 2026 18:00:00").getTime();
+
+        const countdownTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById("countdown").innerHTML = "<h3 class='gold-text'>¡Hoy es el gran día!</h3>";
+            }
+        }, 1000);
+
+        // Inicializadores
+        window.addEventListener("scroll", reveal);
+        window.onload = () => {
+            createStars();
+        };
+    </script>
+</body>
+</html>
