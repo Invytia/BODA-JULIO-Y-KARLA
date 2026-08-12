@@ -17,7 +17,7 @@
             --silver-text: #cbd5e1;
             --silver-bright: #ffffff;
             --silver-dark: #94a3b8;
-            --gold-accent: #e2c88d; /* Un toque sutil opcional para contrastar con la plata */
+            --gold-accent: #e2c88d;
         }
 
         /* 1. CONFIGURACIÓN BASE */
@@ -51,7 +51,7 @@
             height: 100%;
             position: relative;
             overflow: hidden;
-            transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1); /* Transición más suave y elegante */
+            transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .gate-half::before {
             content: '';
@@ -62,7 +62,7 @@
             background-image: url('assets/bodas.jpg');
             background-size: cover;
             background-position: center;
-            filter: brightness(0.85); /* Oscurece ligeramente el fondo para resaltar el texto */
+            filter: brightness(0.85);
         }
         .left-gate { left: 0; border-right: 1px solid rgba(255,255,255,0.1); }
         .left-gate::before { left: 0; } 
@@ -86,7 +86,6 @@
             animation: float 5s ease-in-out infinite;
         }
 
-        /* NUEVO DISEÑO DEL BOTÓN DE ENTRADA (Mayor contraste) */
         .entrance-badge {
             background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -186,7 +185,7 @@
             backdrop-filter: blur(10px);
             margin: 10px 5px;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 50px; /* Diseño de píldora más elegante */
+            border-radius: 50px;
         }
         .btn-premium:hover {
             background: rgba(255, 255, 255, 1);
@@ -194,10 +193,6 @@
             transform: translateY(-4px);
             box-shadow: 0 15px 25px rgba(255,255,255,0.15);
         }
-        .btn-yes { background: rgba(46, 204, 113, 0.05); border-color: rgba(46, 204, 113, 0.5); color: #2ecc71; }
-        .btn-yes:hover { background: #2ecc71; color: var(--navy-deep); border-color: #2ecc71; }
-        .btn-no { background: rgba(231, 76, 60, 0.05); border-color: rgba(231, 76, 60, 0.5); color: #e74c3c; }
-        .btn-no:hover { background: #e74c3c; color: white; border-color: #e74c3c; }
 
         /* 7. COUNTDOWN */
         .countdown-container {
@@ -218,7 +213,7 @@
             margin: 30px 0;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            filter: grayscale(30%) contrast(1.1); /* Toque más elegante al mapa */
+            filter: grayscale(30%) contrast(1.1);
         }
         .address-text { font-size: 0.95rem; font-weight: 300; line-height: 1.8; margin-bottom: 15px; }
 
@@ -257,7 +252,7 @@
             transition: transform 10s ease;
         }
         .photo-wrapper.active img {
-            transform: scale(1.05); /* Zoom in ultra lento al revelar */
+            transform: scale(1.05);
         }
 
         /* 11. TIMELINE INTERCALADO CON ESTRELLAS */
@@ -267,7 +262,6 @@
             margin: 50px auto;
             padding: 20px 0;
         }
-        /* Línea central */
         .timeline::after {
             content: '';
             position: absolute;
@@ -283,11 +277,9 @@
             box-sizing: border-box;
             margin-bottom: 30px;
         }
-        /* Intercalado */
         .timeline-item:nth-child(odd) { left: 0; text-align: right; }
         .timeline-item:nth-child(even) { left: 50%; text-align: left; }
         
-        /* Estrellas centrales */
         .timeline-item::after {
             content: '\f005';
             font-family: 'Font Awesome 6 Free';
@@ -314,7 +306,7 @@
         .section-title { font-size: 2.2rem; margin-bottom: 30px; font-weight: 400; }
         .section-icon { font-size: 1.8rem; margin-bottom: 25px; color: var(--silver-bright); opacity: 0.8; }
 
-        /* 13. FORMULARIO BUENOS DESEOS */
+        /* 13. FORMULARIO BUENOS DESEOS Y CONFIRMACIÓN */
         .wish-form {
             display: flex;
             flex-direction: column;
@@ -343,6 +335,10 @@
             box-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
         .wish-textarea { height: 120px; resize: none; }
+        .wish-input option {
+            background-color: var(--navy-deep);
+            color: var(--silver-bright);
+        }
 
         /* 14. MUSIC PLAYER STICKY */
         #audio-toggle {
@@ -372,7 +368,6 @@
             .btn-premium { padding: 14px 20px; font-size: 0.65rem; }
             .monogram-entrance { width: 130px; }
             
-            /* Ajuste sutil del timeline para pantallas muy chicas, se mantiene el diseño intercalado pero reduciendo paddings */
             .timeline-item { padding: 10px 15px; }
             .time { font-size: 1.1rem; }
             .event { font-size: 0.75rem; }
@@ -470,7 +465,6 @@
                 Plaza de las 3 Culturas, Tlatelolco, CDMX.<br><br>
                 <strong class="elegant glow-text" style="font-size: 1.5rem; color: var(--silver-bright); letter-spacing: 2px;">4:30 PM</strong>
             </p>
-            <!-- Mapa Parroquia Tlatelolco -->
             <iframe class="map-box" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.2472917717467!2d-99.1399896!3d19.4508499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f930e37dfdbf%3A0x6e2df4e7436b1d42!2sParroquia%20de%20Santiago%20Ap%C3%B3stol%20(Tlatelolco)!5e0!3m2!1ses-419!2smx!4v1714578000000!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
@@ -511,7 +505,6 @@
                 Ciudad de México<br><br>
                 <strong class="elegant glow-text" style="font-size: 1.5rem; color: var(--silver-bright); letter-spacing: 2px;">6:30 PM</strong>
             </p>
-            <!-- Mapa Salón los Ventanales -->
             <iframe class="map-box" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.661138407335!2d-99.1023!3d19.4270!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDI1JzM3LjIiTiA5OcKwMDYnMDguMyJX!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx" allowfullscreen="" loading="lazy"></iframe>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
@@ -556,7 +549,7 @@
 
         <div class="reveal photo-wrapper"><img src="assets/foto8.jpg" alt="Foto Novios 8"></div>
 
-        <!-- PROGRAMA / ITINERARIO (INTERCALADO CON ESTRELLAS) -->
+        <!-- PROGRAMA / ITINERARIO -->
         <section class="reveal">
             <h2 class="elegant silver-shimmer section-title">Programa</h2>
             <div class="timeline">
@@ -663,16 +656,20 @@
                 Su presencia es muy importante para nosotros. Por favor confirme su asistencia antes del <strong style="color: var(--silver-bright);">28 de octubre 2026</strong>.
             </p>
             
-            <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-bottom: 50px;">
-                <a href="https://wa.me/525579246818?text=Hola!%20Confirmo%20mi%20asistencia%20%E2%9C%85%20a%20la%20Boda%20de%20Karla%20y%20Julio." 
-                   target="_blank" class="btn-premium btn-yes" style="width: 85%; max-width: 320px; font-weight: bold; font-size: 0.85rem;">
-                   <i class="fas fa-check" style="margin-right: 10px;"></i> Sí asistiré
-                </a>
+            <!-- FORMULARIO DE CONFIRMACIÓN A GOOGLE SHEETS -->
+            <div class="wish-form" style="margin-bottom: 50px;">
+                <input type="text" id="rsvpName" class="wish-input" placeholder="Tu nombre y apellido..." required>
+                <input type="tel" id="rsvpPhone" class="wish-input" placeholder="Tu número de WhatsApp..." required>
                 
-                <a href="https://wa.me/525579246818?text=Hola!%20Lamentablemente%20no%20podr%C3%A9%20asistir%20%E2%9D%8C%20a%20la%20Boda%20de%20Karla%20y%20Julio." 
-                   target="_blank" class="btn-premium btn-no" style="width: 85%; max-width: 320px; font-weight: bold; font-size: 0.85rem;">
-                   <i class="fas fa-times" style="margin-right: 10px;"></i> No asistiré
-                </a>
+                <select id="rsvpStatus" class="wish-input" style="appearance: none; cursor: pointer;">
+                    <option value="" disabled selected>¿Nos acompañarás?</option>
+                    <option value="Sí asistiré">✅ Sí, confirmo mi asistencia</option>
+                    <option value="No asistiré">❌ No podré asistir</option>
+                </select>
+                
+                <button onclick="submitRSVP()" id="btnSubmitRSVP" class="btn-premium" style="width: 100%; max-width: 400px; background: rgba(255,255,255,0.1); border-color: var(--silver-bright); cursor: pointer; margin-top: 15px;">
+                    <i class="far fa-paper-plane" style="margin-right: 10px;"></i> Confirmar Asistencia
+                </button>
             </div>
 
             <div class="reveal photo-wrapper"><img src="assets/foto12.jpg" alt="Foto Novios 12"></div>
@@ -695,7 +692,7 @@
     </main>
 
     <script>
-        // --- 1. MOTOR DE PARTÍCULAS (ESTRELLAS ESTÁTICAS Y BRILLANTES) ---
+        // --- 1. MOTOR DE PARTÍCULAS ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -756,7 +753,7 @@
                     document.getElementById('music-icon').className = "fas fa-volume-mute";
                 });
                 
-                reveal(); // Activa las primeras animaciones
+                reveal(); 
             }, 1800);
         }
 
@@ -789,7 +786,58 @@
             }
         }, 1000);
 
-        // --- 4. ENVÍO DE BUENOS DESEOS POR WHATSAPP ---
+        // --- 4. ENVÍO DE DATOS A GOOGLE SHEETS Y WHATSAPP (CONFIRMACIÓN) ---
+        function submitRSVP() {
+            const name = document.getElementById('rsvpName').value.trim();
+            const phone = document.getElementById('rsvpPhone').value.trim();
+            const status = document.getElementById('rsvpStatus').value;
+            const btn = document.getElementById('btnSubmitRSVP');
+
+            if(!name || !phone || !status) {
+                alert("Por favor, completa todos los campos para confirmar.");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 10px;"></i> Enviando...';
+            btn.style.pointerEvents = 'none';
+
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbyN433dshIoRDN0lfgH_ebIWVbFSGn4xr2smo1ztzQ4i6LnuYq8TMuzoen_pe24ABoADQ/exec';
+            
+            const payload = {
+                nombre: name,
+                telefono: phone,
+                asistencia: status
+            };
+
+            fetch(webAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                btn.innerHTML = '<i class="fas fa-check" style="margin-right: 10px;"></i> ¡Confirmado!';
+                document.getElementById('rsvpName').value = '';
+                document.getElementById('rsvpPhone').value = '';
+                document.getElementById('rsvpStatus').value = '';
+                
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="far fa-paper-plane" style="margin-right: 10px;"></i> Confirmar Asistencia';
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+
+                const wpMessage = encodeURIComponent(`Hola Karla y Julio, soy ${name}. Les escribo para confirmar que ${status.toLowerCase()} a su boda.`);
+                window.open(`https://wa.me/525579246818?text=${wpMessage}`, '_blank');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Hubo un error al enviar tu confirmación. Intenta de nuevo.");
+                btn.innerHTML = '<i class="far fa-paper-plane" style="margin-right: 10px;"></i> Confirmar Asistencia';
+                btn.style.pointerEvents = 'auto';
+            });
+        }
+
+        // --- 5. ENVÍO DE BUENOS DESEOS POR WHATSAPP ---
         function sendWishes() {
             const name = document.getElementById('wishName').value.trim();
             const message = document.getElementById('wishMessage').value.trim();
@@ -809,18 +857,16 @@
             const url = `https://wa.me/525579246818?text=${encodedText}`;
             window.open(url, '_blank');
             
-            // Limpiar los campos después de enviar
             document.getElementById('wishName').value = '';
             document.getElementById('wishMessage').value = '';
         }
 
-        // --- 5. ANIMACIONES SCROLL (Reveal Suave) ---
+        // --- 6. ANIMACIONES SCROLL (Reveal Suave) ---
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
             reveals.forEach(r => {
                 const windowHeight = window.innerHeight;
                 const elementTop = r.getBoundingClientRect().top;
-                // Activa cuando el elemento está a 100px dentro del viewport
                 if (elementTop < windowHeight - 100) {
                     r.classList.add("active");
                 }
