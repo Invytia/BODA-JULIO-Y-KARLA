@@ -302,8 +302,8 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.6);
             z-index: 1;
         }
-        .timeline-item:nth-child(odd)::after { right: -13px; }
-        .timeline-item:nth-child(even)::after { left: -13px; }
+        .timeline-item:nth-child(odd):after { right: -13px; }
+        .timeline-item:nth-child(even):after { left: -13px; }
 
         .time { font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--silver-bright); font-size: 1.3rem; letter-spacing: 1px; }
         .event { font-size: 0.85rem; margin-top: 8px; line-height: 1.6; font-weight: 300; color: var(--silver-text); }
@@ -379,8 +379,8 @@
             .timeline-item { padding: 10px 15px; }
             .time { font-size: 1.1rem; }
             .event { font-size: 0.75rem; }
-            .timeline-item:nth-child(odd)::after { right: -11.5px; }
-            .timeline-item:nth-child(even)::after { left: -11.5px; }
+            .timeline-item:nth-child(odd):after { right: -11.5px; }
+            .timeline-item:nth-child(even):after { left: -11.5px; }
             
             .section-title { font-size: 1.8rem; }
         }
@@ -446,9 +446,8 @@
                    <i class="fab fa-google" style="margin-right: 10px; font-size: 1.1rem;"></i> Google Calendar
                 </a>
                 
-                <!-- Botón Archivo ICS (iPhone / Apple Calendar / Outlook) -->
-                <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20261128T223000Z%0ADTEND:20261129T080000Z%0ASUMMARY:Boda%20Karla%20Stephanie%20%26%20Julio%20C%C3%A9sar%0ALOCATION:Parroquia%20de%20Santiago%20Ap%C3%B3stol%2C%20Tlatelolco%2C%20CDMX%0ADESCRIPTION:Celebraci%C3%B3n%20de%20nuestra%20boda.%0AEND:VEVENT%0AEND:VCALENDAR" 
-                   download="Boda_Karla_Julio.ics" class="btn-premium" style="width: 85%; max-width: 320px;">
+                <!-- Botón Apple Calendar (iOS / Outlook) usando la función JavaScript -->
+                <a onclick="downloadICS()" class="btn-premium" style="width: 85%; max-width: 320px; cursor: pointer;">
                    <i class="fab fa-apple" style="margin-right: 10px; font-size: 1.2rem;"></i> Apple Calendar
                 </a>
             </div>
@@ -894,6 +893,32 @@
         window.addEventListener("scroll", reveal);
         window.addEventListener("resize", initCanvas);
         
+        // --- 7. DESCARGA DE CALENDARIO APPLE/OUTLOOK (ICS) ---
+        function downloadICS() {
+            const icsData = "BEGIN:VCALENDAR\n" +
+                            "VERSION:2.0\n" +
+                            "PRODID:-//Invytia//Boda Karla y Julio//ES\n" +
+                            "BEGIN:VEVENT\n" +
+                            "DTSTART:20261128T223000Z\n" +
+                            "DTEND:20261129T080000Z\n" +
+                            "SUMMARY:Boda Karla Stephanie & Julio César\n" +
+                            "LOCATION:Parroquia de Santiago Apóstol, Tlatelolco, CDMX\n" +
+                            "DESCRIPTION:Celebración de nuestra boda.\n" +
+                            "END:VEVENT\n" +
+                            "END:VCALENDAR";
+
+            const file = new File([icsData], "Boda_Karla_Julio.ics", {type: "text/calendar;charset=utf-8"});
+            const url = URL.createObjectURL(file);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = "Boda_Karla_Julio.ics";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
         // Inicializar
         initCanvas();
         draw();
