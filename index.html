@@ -204,6 +204,14 @@
         .cd-unit { min-width: 60px; }
         .cd-num { font-size: 2.5rem; display: block; font-weight: 300; color: var(--silver-bright); }
         .cd-label { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--silver-dark); margin-top: 5px; display: block; }
+        
+        .calendar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            margin-top: 20px;
+        }
 
         /* 8. MAPAS E INTERACTIVIDAD */
         .map-box {
@@ -420,7 +428,7 @@
 
         <div class="reveal photo-wrapper"><img src="assets/foto1.jpg" alt="Foto Novios 1"></div>
 
-        <!-- COUNTDOWN Y CALENDARIO -->
+        <!-- COUNTDOWN Y CALENDARIO MULTIPLATAFORMA -->
         <section class="reveal">
             <div class="countdown-container">
                 <div class="cd-unit"><span class="cd-num elegant" id="d">00</span><label class="cd-label">Días</label></div>
@@ -429,10 +437,21 @@
                 <div class="cd-unit"><span class="cd-num elegant" id="s">00</span><label class="cd-label">Seg</label></div>
             </div>
             
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Karla+Stephanie+%26+Julio+C%C3%A9sar&dates=20261128T223000Z/20261129T080000Z&details=Celebraci%C3%B3n+de+nuestra+boda.&location=Parroquia+de+Santiago+Ap%C3%B3stol,+Tlatelolco&sf=true&output=xml" 
-               target="_blank" class="btn-premium">
-               <i class="far fa-calendar-alt" style="margin-right: 10px; font-size: 1.1rem;"></i> Guardar en Calendario
-            </a>
+            <p class="address-text" style="font-size: 0.8rem; margin-bottom: 10px; color: var(--silver-dark);">Guardar la fecha:</p>
+            
+            <div class="calendar-buttons">
+                <!-- Botón Google Calendar (Android / PC) -->
+                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Karla+Stephanie+%26+Julio+C%C3%A9sar&dates=20261128T223000Z/20261129T080000Z&details=Celebraci%C3%B3n+de+nuestra+boda.&location=Parroquia+de+Santiago+Ap%C3%B3stol,+Tlatelolco&sf=true&output=xml" 
+                   target="_blank" class="btn-premium" style="width: 85%; max-width: 320px;">
+                   <i class="fab fa-google" style="margin-right: 10px; font-size: 1.1rem;"></i> Google Calendar
+                </a>
+                
+                <!-- Botón Archivo ICS (iPhone / Apple Calendar / Outlook) -->
+                <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20261128T223000Z%0ADTEND:20261129T080000Z%0ASUMMARY:Boda%20Karla%20Stephanie%20%26%20Julio%20C%C3%A9sar%0ALOCATION:Parroquia%20de%20Santiago%20Ap%C3%B3stol%2C%20Tlatelolco%2C%20CDMX%0ADESCRIPTION:Celebraci%C3%B3n%20de%20nuestra%20boda.%0AEND:VEVENT%0AEND:VCALENDAR" 
+                   download="Boda_Karla_Julio.ics" class="btn-premium" style="width: 85%; max-width: 320px;">
+                   <i class="fab fa-apple" style="margin-right: 10px; font-size: 1.2rem;"></i> Apple Calendar
+                </a>
+            </div>
         </section>
 
         <div class="reveal photo-wrapper"><img src="assets/foto2.jpg" alt="Foto Novios 2"></div>
@@ -641,7 +660,7 @@
             </div>
 
             <p class="elegant" style="margin-top: 40px; font-style: italic; font-size: 1.2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; line-height: 1.6; color: var(--silver-text);">
-                "Su presencia es nuestro mejor regalo; sin embargo, para quienes deseen tener un detalle con nosotros, ponemos a su disposición nuestra mesa de regalos y durante la celebración realizaremos la tradicional pasada de la zapatilla y la camisa para quienes deseen apoyarnos con cariño y amor."
+                "Su presencia es nuestro mejor regalo; sin embargo, para quienes deseen tener un detalle con nosotros, ponemos a su disposición nuestra mesa de regalos en el salón y durante la celebración realizaremos la tradicional pasada de la zapatilla y la camisa para quienes deseen apoyarnos con cariño y amor."
             </p>
         </section>
 
